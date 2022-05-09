@@ -58,6 +58,12 @@ public class UserBusiness {
         return userRepository.findAll();
     }
 
+    public ResponseEntity<User> searchById(long id) {
+        return userRepository.findById(id)
+                .map(user -> ResponseEntity.ok().body(user))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     public static boolean isValidUsername(String username) {
         return isEmail(username) || isCPF(username);
     }

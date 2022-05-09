@@ -17,6 +17,10 @@ public class UserController {
         this.userBusiness = userBusiness;
     }
 
+    @GetMapping(path = {"/{id}"})
+    public ResponseEntity<User> findById(@PathVariable long id){
+        return userBusiness.searchById(id);
+    }
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<User> listUser() {
         return userBusiness.listUser();
