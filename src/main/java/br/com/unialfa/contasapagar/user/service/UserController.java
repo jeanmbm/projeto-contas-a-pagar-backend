@@ -3,6 +3,8 @@ package br.com.unialfa.contasapagar.user.service;
 import br.com.unialfa.contasapagar.user.business.UserBusiness;
 import br.com.unialfa.contasapagar.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -11,9 +13,13 @@ public class UserController {
 
     private final UserBusiness userBusiness;
 
-    @Autowired
     public UserController(UserBusiness userBusiness) {
         this.userBusiness = userBusiness;
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<User> listUser() {
+        return userBusiness.listUser();
     }
 
     @PostMapping(path = "/add")
@@ -21,14 +27,19 @@ public class UserController {
         userBusiness.registerUser(user);
     }
 
-    @PutMapping(path = "/edit")
-    public void editUser(@RequestBody User user) {
-        userBusiness.editUser(user);
+    @PutMapping(value = "/edit/{id}")
+    public ResponseEntity<User> editUser(@PathVariable("id") long id, @RequestBody User user) {
+        return userBusiness.editUser(id ,user);
     }
 
-    @PutMapping(value = "/delete")
-    public @ResponseBody void disableUser(@RequestBody User user) {
-        userBusiness.disableUser(user);
+    @PutMapping(value = "/delete/{id}")
+    public ResponseEntity<User> disableUser(@PathVariable("id") long id) {
+        return userBusiness.disableUser(id);
     }
+
+//    @PutMapping(value = "/delete")
+//    public @ResponseBody void disableUser(@RequestBody User user) {
+//        userBusiness.disableUser(user);
+//    }
 }
 

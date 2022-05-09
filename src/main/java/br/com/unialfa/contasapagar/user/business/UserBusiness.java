@@ -4,6 +4,7 @@ import br.com.unialfa.contasapagar.enuns.Status;
 import br.com.unialfa.contasapagar.user.domain.User;
 import br.com.unialfa.contasapagar.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.InputMismatchException;
@@ -15,27 +16,46 @@ public class UserBusiness {
 
     private final UserRepository userRepository;
 
-    @Autowired
     public UserBusiness(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     public void registerUser(User user) {
-        if (isValidUsername(user.getUsername()) && user.getPassword() != null && !user.getPassword().equalsIgnoreCase("")) {
+        if (isValidUsername(user.getUsername()) && (user.getPassword() != null || !user.getPassword().equals(""))) {
             // if (isEmail(user.getUsername) && user.getPassword != null && user.length() > 0) {
+            user.setStatus(Status.ACTIVE);
             userRepository.save(user);
+            System.err.println("USUARIO REGISTRADO COM SUCESSO!!!!");
         } else {
             System.err.println("ERRO AO REGISTRAR USUARIO");
         }
     }
 
-    public void editUser(User user) {
-        userRepository.save(user);
+    public ResponseEntity<User> editUser(long id, User userEdit) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    user.setPassword(userEdit.getPassword());
+                    User updated = userRepository.save(user);
+                    return ResponseEntity.ok().body(updated);
+        }).orElse(ResponseEntity.notFound().build());
     }
 
-    public void disableUser(User user) {
-        user.setStatus(Status.INACTIVE);
-        userRepository.save(user);
+    public ResponseEntity<User> disableUser(long id) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    user.setStatus(Status.INACTIVE);
+                    User disabled = userRepository.save(user);
+                    return ResponseEntity.ok().body(disabled);
+                }).orElse(ResponseEntity.notFound().build());
+    }
+
+//    public void disableUser(User user) {
+//        user.setStatus(Status.INACTIVE);
+//        userRepository.save(user);
+//    }
+
+    public Iterable<User> listUser() {
+        return userRepository.findAll();
     }
 
     public static boolean isValidUsername(String username) {
