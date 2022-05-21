@@ -17,18 +17,19 @@ public class UserController {
         this.userBusiness = userBusiness;
     }
 
-    @GetMapping(path = {"/{id}"})
-    public ResponseEntity<User> findById(@PathVariable long id){
-        return userBusiness.searchById(id);
+    @GetMapping(path = "/login")
+    public ResponseEntity<?> validateUser(@RequestBody User user){
+        return userBusiness.validateLogin(user);
     }
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<User> listUser() {
         return userBusiness.listUser();
     }
 
     @PostMapping(path = "/add")
-    public void registerUser(@RequestBody User user) {
-        userBusiness.registerUser(user);
+    public ResponseEntity<?> registerUser(@RequestBody User user) {
+        return userBusiness.registerUser(user);
     }
 
     @PutMapping(value = "/edit/{id}")
@@ -37,13 +38,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/delete/{id}")
-    public ResponseEntity<User> disableUser(@PathVariable("id") long id) {
+    public ResponseEntity<?> disableUser(@PathVariable("id") long id) {
         return userBusiness.disableUser(id);
     }
-
-//    @PutMapping(value = "/delete")
-//    public @ResponseBody void disableUser(@RequestBody User user) {
-//        userBusiness.disableUser(user);
-//    }
 }
-

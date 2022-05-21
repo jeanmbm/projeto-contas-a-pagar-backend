@@ -3,7 +3,7 @@ package br.com.unialfa.contasapagar.user.business;
 import br.com.unialfa.contasapagar.enuns.Status;
 import br.com.unialfa.contasapagar.user.domain.User;
 import br.com.unialfa.contasapagar.user.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +20,17 @@ public class UserBusiness {
         this.userRepository = userRepository;
     }
 
-    public void registerUser(User user) {
-        if (isValidUsername(user.getUsername()) && (user.getPassword() != null || !user.getPassword().equals(""))) {
-            // if (isEmail(user.getUsername) && user.getPassword != null && user.length() > 0) {
-            user.setStatus(Status.ACTIVE);
-            userRepository.save(user);
-            System.err.println("USUARIO REGISTRADO COM SUCESSO!!!!");
-        } else {
-            System.err.println("ERRO AO REGISTRAR USUARIO");
+    public ResponseEntity<?> registerUser(User user) {
+        try {
+            if (isValidUsername(user.getUsername()) && (user.getPassword() != null || !user.getPassword().equals(""))) {
+                user.setStatus(Status.ACTIVE);
+                userRepository.save(user);
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -37,31 +40,32 @@ public class UserBusiness {
                     user.setPassword(userEdit.getPassword());
                     User updated = userRepository.save(user);
                     return ResponseEntity.ok().body(updated);
-        }).orElse(ResponseEntity.notFound().build());
-    }
-
-    public ResponseEntity<User> disableUser(long id) {
-        return userRepository.findById(id)
-                .map(user -> {
-                    user.setStatus(Status.INACTIVE);
-                    User disabled = userRepository.save(user);
-                    return ResponseEntity.ok().body(disabled);
                 }).orElse(ResponseEntity.notFound().build());
     }
 
-//    public void disableUser(User user) {
-//        user.setStatus(Status.INACTIVE);
-//        userRepository.save(user);
-//    }
+    public ResponseEntity<?> disableUser(long id) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    user.setStatus(Status.INACTIVE);
+                    userRepository.save(user);
+                    return new ResponseEntity<>(HttpStatus.OK);
+                }).orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    }
 
     public Iterable<User> listUser() {
         return userRepository.findAll();
     }
 
-    public ResponseEntity<User> searchById(long id) {
-        return userRepository.findById(id)
-                .map(user -> ResponseEntity.ok().body(user))
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<User> validateLogin(User userLogin) {
+        try {
+            User user = userRepository.findByUsernameAndPassword(userLogin.getUsername(), userLogin.getPassword());
+            if (user != null)
+                return new ResponseEntity<>(HttpStatus.OK);
+            else
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     public static boolean isValidUsername(String username) {

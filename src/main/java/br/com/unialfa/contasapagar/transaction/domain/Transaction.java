@@ -20,12 +20,12 @@ public class Transaction implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private Type type;
     private String description;
 
-    @Column(nullable = false, unique = true)
-    private int value;
+    @Column(nullable = false)
+    private double value;
     private Date updated_at;
     private Date created_at;
     private Status status;
