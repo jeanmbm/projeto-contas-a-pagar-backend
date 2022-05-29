@@ -22,10 +22,10 @@ public class TransactionController {
         return transactionBusiness.registerTransaction(transaction);
     }
 
-//    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//    public Iterable<Transaction> listAll() {
-//        return transactionBusiness.listAll();
-//    }
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<Transaction> listAll() {
+        return transactionBusiness.listAll();
+    }
 
     @PutMapping(value = "/edit/{id}")
     public ResponseEntity<?> editTransaction(@PathVariable("id") long id, @RequestBody Transaction transaction) {

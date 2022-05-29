@@ -17,7 +17,7 @@ public class UserController {
         this.userBusiness = userBusiness;
     }
 
-    @GetMapping(path = "/login")
+    @PostMapping(path = "/login")
     public ResponseEntity<?> validateUser(@RequestBody User user){
         return userBusiness.validateLogin(user);
     }
@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/edit/{id}")
-    public ResponseEntity<User> editUser(@PathVariable("id") long id, @RequestBody User user) {
+    public ResponseEntity<?> editUser(@PathVariable("id") long id, @RequestBody User user) {
         return userBusiness.editUser(id ,user);
     }
 

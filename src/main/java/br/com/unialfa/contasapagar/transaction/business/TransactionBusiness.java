@@ -93,8 +93,8 @@ public class TransactionBusiness {
                 }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-//    public Iterable<Transaction> listAll() {
-//        return transactionRepository.findAll();
-//    }
+    public Iterable<Transaction> listAll() {
+        return transactionRepository.findAll();
+    }
 
 }
