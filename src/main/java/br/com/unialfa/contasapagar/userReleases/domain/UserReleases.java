@@ -24,10 +24,10 @@ public class UserReleases implements Serializable {
     private long id;
 
     @OneToOne
-    private User userId;
+    private User user;
 
     @OneToOne
-    private Transaction transactionId;
+    private Transaction transaction;
     private OperationType operationType;
     private Date created_at;
 }

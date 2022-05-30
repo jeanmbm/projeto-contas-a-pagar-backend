@@ -2,6 +2,7 @@ package br.com.unialfa.contasapagar.transaction.service;
 
 import br.com.unialfa.contasapagar.transaction.business.TransactionBusiness;
 import br.com.unialfa.contasapagar.transaction.domain.Transaction;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,10 +21,10 @@ public class TransactionController {
         return transactionBusiness.registerTransaction(transaction, userId);
     }
 
-//    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//    public Iterable<?> listAll() {
-//        return transactionBusiness.listAll();
-//    }
+    @GetMapping(path = "/list/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<?> listAll(@PathVariable("userId") Long userId) {
+        return transactionBusiness.listTransactions(userId);
+    }
 
     @PutMapping(value = "/edit/{id}/{userId}")
     public ResponseEntity<?> editTransaction(@PathVariable("id") long id, @RequestBody Transaction transaction, @PathVariable("userId") long userId) {

@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface TransactionRepository extends CrudRepository<Transaction, Long> {
 
-//    @Query("SELECT t.* FROM transactions t INNER JOIN user_releases ur ON t.id = ur.transaction_id_id WHERE ur.user_id_id = ?43")
-//    List<Transaction> ListTransactions();
+    @Query("SELECT t FROM transactions t INNER JOIN user_releases ur ON ur.transaction.id = t.id WHERE ur.user.id = ?1")
+    List<Transaction> listTransactions(Long idUsuario);
+
 }

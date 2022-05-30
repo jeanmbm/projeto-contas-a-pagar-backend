@@ -41,8 +41,8 @@ public class TransactionBusiness {
                 Optional<User> user = userBusiness.findById(userId);
 
                 UserReleases userReleases = new UserReleases();
-                userReleases.setTransactionId(transactionId);
-                userReleases.setUserId(user.get());
+                userReleases.setTransaction(transactionId);
+                userReleases.setUser(user.get());
                 userReleases.setCreated_at(date);
                 userReleases.setOperationType(OperationType.CREATE);
                 userReleasesBusiness.registerUserReleases(userReleases);
@@ -69,8 +69,8 @@ public class TransactionBusiness {
                     Optional<User> user = userBusiness.findById(userId);
 
                     UserReleases userReleases = new UserReleases();
-                    userReleases.setTransactionId(updated);
-                    userReleases.setUserId(user.get());
+                    userReleases.setTransaction(updated);
+                    userReleases.setUser(user.get());
                     userReleases.setCreated_at(date);
                     userReleases.setOperationType(OperationType.UPDATE);
                     userReleasesBusiness.registerUserReleases(userReleases);
@@ -97,8 +97,8 @@ public class TransactionBusiness {
                         Optional<User> user = userBusiness.findById(userId);
 
                         UserReleases userReleases = new UserReleases();
-                        userReleases.setTransactionId(updated);
-                        userReleases.setUserId(user.get());
+                        userReleases.setTransaction(updated);
+                        userReleases.setUser(user.get());
                         userReleases.setCreated_at(date);
                         userReleases.setOperationType(OperationType.UPDATE);
                         userReleasesBusiness.registerUserReleases(userReleases);
@@ -109,8 +109,8 @@ public class TransactionBusiness {
         }
     }
 
-//    public Iterable<?> listAll() {
-//        return transactionRepository.ListTransactions();
-//    }
+    public Iterable<?> listTransactions(Long id) {
+        return transactionRepository.listTransactions(id);
+    }
 
 }
