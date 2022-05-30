@@ -2,8 +2,6 @@ package br.com.unialfa.contasapagar.transaction.service;
 
 import br.com.unialfa.contasapagar.transaction.business.TransactionBusiness;
 import br.com.unialfa.contasapagar.transaction.domain.Transaction;
-import br.com.unialfa.contasapagar.user.domain.User;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,24 +15,24 @@ public class TransactionController {
         this.transactionBusiness = transactionBusiness;
     }
 
-    @PostMapping(path = "/add")
-    public ResponseEntity<?> registerTransaction(@RequestBody Transaction transaction) {
-        return transactionBusiness.registerTransaction(transaction);
+    @PostMapping(path = "/add/{userId}")
+    public ResponseEntity<?> registerTransaction(@RequestBody Transaction transaction, @PathVariable("userId") long userId) {
+        return transactionBusiness.registerTransaction(transaction, userId);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<Transaction> listAll() {
-        return transactionBusiness.listAll();
+//    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+//    public Iterable<?> listAll() {
+//        return transactionBusiness.listAll();
+//    }
+
+    @PutMapping(value = "/edit/{id}/{userId}")
+    public ResponseEntity<?> editTransaction(@PathVariable("id") long id, @RequestBody Transaction transaction, @PathVariable("userId") long userId) {
+        return transactionBusiness.editTransaction(id ,transaction, userId);
     }
 
-    @PutMapping(value = "/edit/{id}")
-    public ResponseEntity<?> editTransaction(@PathVariable("id") long id, @RequestBody Transaction transaction) {
-        return transactionBusiness.editTransaction(id ,transaction);
-    }
-
-    @PutMapping(value = "/cancel/{id}")
-    public ResponseEntity<?> cancelTransaction(@PathVariable("id") long id) {
-        return transactionBusiness.cancelTransaction(id);
+    @PutMapping(value = "/cancel/{id}/{userId}")
+    public ResponseEntity<?> cancelTransaction(@PathVariable("id") long id, @PathVariable("userId") long userId) {
+        return transactionBusiness.cancelTransaction(id, userId);
     }
 
 }

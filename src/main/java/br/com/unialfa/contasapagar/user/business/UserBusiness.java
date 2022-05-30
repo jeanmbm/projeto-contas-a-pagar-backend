@@ -7,14 +7,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 //import java.util.InputMismatchException;
 //import java.util.regex.Matcher;
 //import java.util.regex.Pattern;
 
 @Service
 public class UserBusiness {
-
-
 
     private final UserRepository userRepository;
 
@@ -34,7 +34,6 @@ public class UserBusiness {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
-
     }
 
     public ResponseEntity<?> editUser(long id, User userEdit) {
@@ -48,7 +47,6 @@ public class UserBusiness {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
     }
 
     public ResponseEntity<?> disableUser(long id) {
@@ -62,11 +60,14 @@ public class UserBusiness {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
     }
 
     public Iterable<User> listUser() {
         return userRepository.findAll();
+    }
+
+    public Optional<User> findById(long id) {
+        return userRepository.findById(id);
     }
 
     public ResponseEntity<User> validateLogin(User userLogin) {
@@ -80,7 +81,10 @@ public class UserBusiness {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-//
+
+
+
+
 //    public static boolean isValidUsername(String username) {
 //        return isEmail(username) || isCPF(username);
 //    }
