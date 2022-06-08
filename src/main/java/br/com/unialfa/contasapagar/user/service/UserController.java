@@ -22,11 +22,6 @@ public class UserController {
         return userBusiness.validateLogin(user);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<User> listUser() {
-        return userBusiness.listUser();
-    }
-
     @PostMapping(path = "/add")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
         return userBusiness.registerUser(user);

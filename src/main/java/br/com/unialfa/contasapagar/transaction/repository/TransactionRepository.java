@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TransactionRepository extends CrudRepository<Transaction, Long> {
 
-    @Query("SELECT t FROM transactions t INNER JOIN user_releases ur ON ur.transaction.id = t.id WHERE ur.user.id = ?1")
+    @Query("SELECT t, ur.created_at FROM transactions t INNER JOIN user_releases ur ON ur.transaction.id = t.id AND ur.id = (SELECT MAX(ur2.id) FROM user_releases ur2 WHERE ur2.user.id = ?1 AND ur2.transaction.id = t.id)")
     List<Transaction> listTransactions(Long idUsuario);
 
 }

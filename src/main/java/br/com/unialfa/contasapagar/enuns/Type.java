@@ -2,7 +2,7 @@ package br.com.unialfa.contasapagar.enuns;
 
 public enum Type {
 
-    PAY("P"), RECIVE("R");
+    PAY("Pagamento"), RECIVE("Recebimento");
 
     Type(String type) {
         this.type = type;
